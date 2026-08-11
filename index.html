@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สุขสันต์วันแม่! - ทายลูกแม่</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        body {
+            background-color: #ffeef2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: #555555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .card-box {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-content img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 3px solid #f8bbd0;
+        }
+
+        .card-content p {
+            font-size: 14px;
+            color: #333;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: none;
+            z-index: 2;
+        }
+
+        /* Modal ป๊อปอัปทั่วไป */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h2 {
+            color: #d63384;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-main {
+            padding: 12px 25px;
+            background-color: #d63384;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .btn-main:hover {
+            background-color: #b02a6b;
+        }
+
+        /* สไตล์กล่องจดหมายอวยพร */
+        .letter-box {
+            background-color: #fff9fa;
+            border: 2px dashed #f8bbd0;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            margin-bottom: 20px;
+            color: #444;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .letter-box h3 {
+            color: #d63384;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .letter-box p {
+            font-size: 15px;
+            line-height: 1.7;
+            text-indent: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌸 สุขสันต์วันแม่! 🌸</h1>
+    <p class="subtitle">🔍 หาให้เจอ! คนไหนคือลูกชายทำปากจู๋ของคุณแม่?<br>💡 ใช้นิ้วหรือเมาส์ขูดการ์ดได้เลย!</p>
+
+    <div class="card-container">
+        <!-- การ์ดใบที่ 1 -->
+        <div class="card-box" data-is-real="false">
+            <div class="card-content">
+                <img src="https://i.ibb.co/GDt1kZc/IMG-1303.jpg" alt="ลูกชาย 1">
+                <p>😜 เกือบใช่แล้ว!</p>
+                <p>ลองใบอื่นอีกที</p>
+            </div>
+            <canvas></canvas>
+        </div>
+
+        <!-- การ์ดใบที่ 2 -->
+        <div class="card-box" data-is-real="false">
+            <div class="card-content">
+                <img src="https://i.ibb.co/tTf4Pcn5/IMG-1304.jpg" alt="ลูกชาย 2">
+                <p>😜 คนนี้ยิ้มกว้างไปนิด!</p>
+                <p>ลองหาดูใหม่นะ</p>
+            </div>
+            <canvas></canvas>
+        </div>
+
+        <!-- การ์ดใบที่ 3 (ใบที่ถูกต้อง: สลับเอา IMG-1306 มาใส่แทนแล้ว) -->
+        <div class="card-box" data-is-real="true">
+            <div class="card-content">
+                <img src="https://i.ibb.co/k6DtvBN9/IMG-1306.jpg" alt="ลูกชายปากจู๋">
+                <p>🎉 ลูกชายตัวจริง!</p>
+                <p>รักแม่ที่สุดในโลก ❤️</p>
+            </div>
+            <canvas></canvas>
+        </div>
+
+        <!-- การ์ดใบที่ 4 (สลับเอา IMG-1305 มาใส่แทนแล้ว) -->
+        <div class="card-box" data-is-real="false">
+            <div class="card-content">
+                <img src="https://i.ibb.co/8D4mNvCK/IMG-1305.jpg" alt="ลูกชาย 4">
+                <p>😜 ยังไม่ใช่จ้า!</p>
+                <p>ลองขูดใบอื่นดูใหม่</p>
+            </div>
+            <canvas></canvas>
+        </div>
+    </div>
+
+    <!-- Modal แจ้งเตือนเมื่อทายผิด -->
+    <div class="modal" id="wrongModal">
+        <div class="modal-content">
+            <h2>❌ ยังไม่ใช่จ้า!</h2>
+            <p>คนนี้ไม่ใช่ลูกที่ทำปากจู๋นะ!<br>ลองขูดหาใบอื่นดูใหม่ 😜</p>
+            <button class="btn-main" onclick="closeModal('wrongModal')">ลองใหม่</button>
+        </div>
+    </div>
+
+    <!-- Modal แจ้งเตือนเมื่อทายถูก -->
+    <div class="modal" id="winModal">
+        <div class="modal-content">
+            <h2>🎉 เก่งมากแม่! หาเจอแล้ว!</h2>
+            <p>ทายถูกแล้ว! ลูกชายตัวจริงเสียงจริง ❤️<br>มีจดหมายอวยพรสุดพิเศษรอใส่อยู่ตรงนี้ด้วยนะ!</p>
+            <button class="btn-main" onclick="openLetter()">💌 คลิกเปิดอ่านคำอวยพรจากลูก</button>
+        </div>
+    </div>
+
+    <!-- Modal แสดงการ์ดคำอวยพร -->
+    <div class="modal" id="letterModal">
+        <div class="modal-content">
+            <div class="letter-box">
+                <h3>💌 สุขสันต์วันแม่ครับแม่ 🌸</h3>
+                <p>กราบสุขสันต์วันแม่ครับแม่ ขอบคุณแม่ที่คอยดูแล อบรมสั่งสอน และมอบความรักให้ลูกมาโดยตลอดนะครับ</p>
+                <p>ขอให้แม่มีความสุขมากๆ สุขภาพร่างกายแข็งแรง ไม่มีโรคภัยไข้เจ็บ ยิ้มเยอะๆ ในทุกๆ วัน และอยู่เป็นร่มโพธิ์ร่มไทรให้ลูกไปนานๆ นะครับ</p>
+                <p style="text-align: right; font-weight: bold; color: #d63384;">รักแม่ที่สุดในโลกเลยนะ! 💕</p>
+            </div>
+            <button class="btn-main" onclick="closeModal('letterModal')">ปิดการ์ดอวยพร</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cardBoxes = document.querySelectorAll('.card-box');
+
+            cardBoxes.forEach((box, index) => {
+                const canvas = box.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
+                let isDrawing = false;
+                let revealed = false;
+
+                function initCanvas() {
+                    const w = box.clientWidth || 200;
+                    const h = box.clientHeight || 250;
+                    
+                    canvas.width = w;
+                    canvas.height = h;
+
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.fillStyle = '#cccccc';
+                    ctx.fillRect(0, 0, w, h);
+
+                    ctx.fillStyle = '#555555';
+                    ctx.font = 'bold 18px Tahoma';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('❓ ใบที่ ' + (index + 1), w / 2, h / 2 - 10);
+                    
+                    ctx.font = '14px Tahoma';
+                    ctx.fillText('ขูดตรงนี้', w / 2, h / 2 + 18);
+                }
+
+                setTimeout(initCanvas, 100);
+                window.addEventListener('resize', initCanvas);
+
+                function scratch(e) {
+                    if (!isDrawing || revealed) return;
+
+                    const rect = canvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                    const x = clientX - rect.left;
+                    const y = clientY - rect.top;
+
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 25, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    checkScratchPercent();
+                }
+
+                function checkScratchPercent() {
+                    if (revealed) return;
+
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = imageData.data;
+                    let transparentPixels = 0;
+
+                    for (let i = 3; i < pixels.length; i += 4) {
+                        if (pixels[i] === 0) {
+                            transparentPixels++;
+                        }
+                    }
+
+                    const totalPixels = pixels.length / 4;
+                    const percent = (transparentPixels * 100) / totalPixels;
+
+                    if (percent > 40) {
+                        revealed = true;
+                        canvas.style.display = 'none';
+
+                        const isReal = box.getAttribute('data-is-real') === 'true';
+                        if (isReal) {
+                            document.getElementById('winModal').style.display = 'flex';
+                        } else {
+                            document.getElementById('wrongModal').style.display = 'flex';
+                        }
+                    }
+                }
+
+                canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+                canvas.addEventListener('mousemove', scratch);
+                window.addEventListener('mouseup', () => { isDrawing = false; });
+
+                canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+                canvas.addEventListener('touchmove', scratch);
+                canvas.addEventListener('touchend', () => { isDrawing = false; });
+            });
+        });
+
+        function openLetter() {
+            document.getElementById('winModal').style.display = 'none';
+            document.getElementById('letterModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+</body>
+</html>
